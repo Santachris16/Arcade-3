@@ -2,10 +2,9 @@
 let totalGamesPlayed = 0;
 let totalWins = 0;
 
-// Bear,Ninja,Hunter Game
+// Bear, Ninja, Hunter Game
 function playBearNinjaHunter() {
     const gameChoices = ["bear", "ninja", "hunter"];
-    let playerWins = 0;
     let playerName = prompt("Welcome to Bear, Ninja, Hunter! Please enter your name:");
 
     if (!playerName) {
@@ -39,7 +38,6 @@ function playBearNinjaHunter() {
             (playerChoice === "hunter" && computerChoice === "bear")
         ) {
             resultMessage += "Congratulations, you win!";
-            playerWins++;
             totalWins++;
         } else {
             resultMessage += "Sorry, the computer wins this time.";
@@ -52,7 +50,6 @@ function playBearNinjaHunter() {
         keepPlaying = playAgain && playAgain.toLowerCase() === "y";
     }
 
-    alert(`Game over! Thank you for playing Bear-Ninja-Hunter.`);
     showStatistics();
 }
 
@@ -106,7 +103,7 @@ const playGuessingGame = function () {
     showStatistics();
 };
 
-// Magic 8 Ball
+// Magic 8 Ball Game
 const playMagic8Ball = () => {
     const responses = [
         "Yes, definitely!",
@@ -142,17 +139,37 @@ const playMagic8Ball = () => {
         const playAgain = prompt(`${playerName}, would you like to keep playing this game? y/n`);
         keepPlaying = playAgain && playAgain.toLowerCase() === "y";
         totalGamesPlayed++;
-        totalWins++; // Assume a "win" for asking a valid question.
     }
 
     showStatistics();
 };
 
-// Show Playing Session Statistics
+// Show Playing Session Statistics and Badge
 function showStatistics() {
     const tableBody = document.querySelector("#statsTable tbody");
+    const badgeMessage = document.getElementById("badgeMessage");
     const winPercentage = totalGamesPlayed ? ((totalWins / totalGamesPlayed) * 100).toFixed(2) : 0;
+    let badge = "";
 
+    // Determine badge using a switch statement
+    switch (true) {
+        case winPercentage >= 0 && winPercentage <= 25:
+            badge = "Stone";
+            break;
+        case winPercentage > 25 && winPercentage <= 50:
+            badge = "Bronze";
+            break;
+        case winPercentage > 50 && winPercentage <= 75:
+            badge = "Iron";
+            break;
+        case winPercentage > 75 && winPercentage <= 100:
+            badge = "Silicon";
+            break;
+        default:
+            badge = "No Badge";
+    }
+
+    // Update table and badge message
     tableBody.innerHTML = `
         <tr>
             <td>${totalGamesPlayed}</td>
@@ -160,6 +177,7 @@ function showStatistics() {
             <td>${winPercentage}%</td>
         </tr>
     `;
+    badgeMessage.textContent = `Congratulations! You earned a ${badge} badge!`;
 
     document.getElementById("farewell").classList.remove("hidden");
 }
